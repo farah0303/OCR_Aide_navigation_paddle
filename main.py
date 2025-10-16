@@ -1,5 +1,3 @@
-
-
 import argparse
 import glob
 import os
@@ -22,7 +20,8 @@ def choose_pdf_interactively(pdf_paths: List[str]) -> str:
     for i, p in enumerate(pdf_paths, start=1):
         print(f"  [{i}] {os.path.basename(p)}")
     while True:
-        choice = input(f"Select a file by number (1-{len(pdf_paths)}), or 'q' to quit: ")
+        choice = input(
+            f"Select a file by number (1-{len(pdf_paths)}), or 'q' to quit: ")
         if choice.lower() == 'q':
             sys.exit(0)
         try:
@@ -39,7 +38,8 @@ def main():
     parser.add_argument("--file", help="PDF file to process")
     parser.add_argument("--output", help="Output text file")
     parser.add_argument("--pages", help="Pages to extract (e.g. '1,3-5')")
-    parser.add_argument("--zoom", type=float, default=2.0, help="Zoom factor for rendering")
+    parser.add_argument("--zoom", type=float, default=2.0,
+                        help="Zoom factor for rendering")
     args = parser.parse_args()
 
     # Choisir le PDF

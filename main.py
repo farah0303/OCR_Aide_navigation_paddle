@@ -14,6 +14,9 @@ try:
 except:
     extract_text_from_image = is_image_file = SUPPORTED_EXTENSIONS = None
 
+# 🔹 Import pour Google Drive
+from utils_drive.drive_utils import upload_to_drive, ORIGINALS_FOLDER_ID, TEXTS_FOLDER_ID
+
 
 def detect_file_type(fp):
     if not os.path.exists(fp):
@@ -94,10 +97,19 @@ def main():
         output_name = os.path.splitext(os.path.basename(fp))[0] + ".txt"
         output_path = os.path.join(output_dir, output_name)
 
+        # 🔹 Sauvegarde du texte OCR localement
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(text)
 
         print(f"\n✅ OCR terminé. Résultat enregistré dans : {output_path}\n")
+
+        # 🔹 Upload sur Google Drive
+        print("⬆️ Upload du fichier original sur Drive ...")
+        upload_to_drive(fp, folder_id=ORIGINALS_FOLDER_ID)
+
+        print("⬆️ Upload du fichier texte OCR sur Drive ...")
+        upload_to_drive(output_path, folder_id=TEXTS_FOLDER_ID)
+
     except Exception as e:
         print(f"\nERREUR : {e}")
         traceback.print_exc()

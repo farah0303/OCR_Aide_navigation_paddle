@@ -1,47 +1,46 @@
-import os
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
+import os
 
-# 🔹 Chemins des fichiers
+# 🔹 Paths for client secrets and credentials
 BASE_DIR = os.path.dirname(__file__)
 CLIENT_SECRETS_FILE = os.path.join(BASE_DIR, "client_secrets.json")
 CREDENTIALS_FILE = os.path.join(BASE_DIR, "credentials.json")
 
-# 🔹 Authentification Google Drive
+# 🔹 Authenticate with Google Drive
 gauth = GoogleAuth()
-gauth.LoadClientConfigFile(CLIENT_SECRETS_FILE)  # charge client_secrets.json
-gauth.LoadCredentialsFile(CREDENTIALS_FILE)      # charge credentials.json si existant
+gauth.LoadClientConfigFile(CLIENT_SECRETS_FILE)
+gauth.LoadCredentialsFile(CREDENTIALS_FILE)
+
+gauth.settings['client_config_file'] = CLIENT_SECRETS_FILE
+gauth.settings['get_refresh_token'] = True  # offline mode
 
 if gauth.credentials is None:
-    gauth.LocalWebserverAuth()  # première fois : ouvre le navigateur pour autoriser
+    gauth.LocalWebserverAuth()  # first-time authentication
 elif gauth.access_token_expired:
     gauth.Refresh()
 else:
     gauth.Authorize()
 
-gauth.SaveCredentialsFile(CREDENTIALS_FILE)  # sauvegarde pour les prochaines exécutions
+gauth.SaveCredentialsFile(CREDENTIALS_FILE)
 
-# 🔹 Création de l'objet GoogleDrive
+# 🔹 Google Drive object
 drive = GoogleDrive(gauth)
 
-# 🔹 IDs des dossiers Drive
-ORIGINALS_FOLDER_ID = "1PXmoyabvfMnr0yxTJb2USxnaTgbZyADv"
-TEXTS_FOLDER_ID = "1_y_bbWfpOaZXXSMbPuSrbBBS3lSn3165"
-
-# 🔹 Fonction d'upload
+# 🔹 Function to upload file
 def upload_to_drive(local_path, folder_id=None):
-    """Upload un fichier sur Google Drive et retourne le lien partageable"""
+    """Upload a file to Google Drive and return the shareable link."""
     if not os.path.exists(local_path):
         raise FileNotFoundError(f"Le fichier {local_path} n'existe pas !")
 
     file_name = os.path.basename(local_path)
     file_drive = drive.CreateFile({
         'title': file_name,
-        'parents':[{'id': folder_id}] if folder_id else []
+        'parents': [{'id': folder_id}] if folder_id else []
     })
     file_drive.SetContentFile(local_path)
     file_drive.Upload()
     file_drive.InsertPermission({'type': 'anyone', 'value': 'anyone', 'role': 'reader'})
-    
+
     print(f"✅ Fichier '{file_name}' envoyé sur Drive : {file_drive['alternateLink']}")
     return file_drive['alternateLink']

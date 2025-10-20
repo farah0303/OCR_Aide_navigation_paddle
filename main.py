@@ -3,6 +3,7 @@ import glob
 import os
 import sys
 import traceback
+from utils_drive.drive_utils import drive, upload_to_drive
 
 try:
     from extract_text_pdf import extract_text_from_pdf
@@ -13,9 +14,6 @@ try:
     from extract_text_image import extract_text_from_image, is_image_file, SUPPORTED_EXTENSIONS
 except:
     extract_text_from_image = is_image_file = SUPPORTED_EXTENSIONS = None
-
-# 🔹 Import pour Google Drive
-from utils_drive.drive_utils import upload_to_drive, ORIGINALS_FOLDER_ID, TEXTS_FOLDER_ID
 
 
 def detect_file_type(fp):
@@ -87,6 +85,9 @@ def ensure_output_folder():
     return out_dir
 
 
+ORIGINALS_FOLDER_ID = "1PXmoyabvfMnr0yxTJb2USxnaTgbZyADv"
+TEXTS_FOLDER_ID = "1_y_bbWfpOaZXXSMbPuSrbBBS3lSn3165"
+
 def main():
     try:
         files = find_example_files()
@@ -97,24 +98,27 @@ def main():
         output_name = os.path.splitext(os.path.basename(fp))[0] + ".txt"
         output_path = os.path.join(output_dir, output_name)
 
-        # 🔹 Sauvegarde du texte OCR localement
+        # Save OCR text locally
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(text)
 
         print(f"\n✅ OCR terminé. Résultat enregistré dans : {output_path}\n")
 
-        # 🔹 Upload sur Google Drive
+        # Upload the original file to the originals folder
         print("⬆️ Upload du fichier original sur Drive ...")
-        upload_to_drive(fp, folder_id=ORIGINALS_FOLDER_ID)
+        original_link = upload_to_drive(fp, folder_id=ORIGINALS_FOLDER_ID)
 
+        # Upload the OCR text to the texts folder
         print("⬆️ Upload du fichier texte OCR sur Drive ...")
-        upload_to_drive(output_path, folder_id=TEXTS_FOLDER_ID)
+        text_link = upload_to_drive(output_path, folder_id=TEXTS_FOLDER_ID)
+
+        print(f"\nOriginal file link: {original_link}")
+        print(f"OCR text link: {text_link}")
 
     except Exception as e:
         print(f"\nERREUR : {e}")
         traceback.print_exc()
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()

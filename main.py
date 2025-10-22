@@ -3,6 +3,7 @@ import glob
 import os
 import sys
 import traceback
+from utils_drive.drive_utils import drive, upload_to_drive
 
 try:
     from extract_text_pdf import extract_text_from_pdf
@@ -84,6 +85,9 @@ def ensure_output_folder():
     return out_dir
 
 
+ORIGINALS_FOLDER_ID = "1PXmoyabvfMnr0yxTJb2USxnaTgbZyADv"
+TEXTS_FOLDER_ID = "1_y_bbWfpOaZXXSMbPuSrbBBS3lSn3165"
+
 def main():
     try:
         files = find_example_files()
@@ -94,15 +98,27 @@ def main():
         output_name = os.path.splitext(os.path.basename(fp))[0] + ".txt"
         output_path = os.path.join(output_dir, output_name)
 
+        # Save OCR text locally
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(text)
 
         print(f"\n✅ OCR terminé. Résultat enregistré dans : {output_path}\n")
+
+        # Upload the original file to the originals folder
+        print("⬆️ Upload du fichier original sur Drive ...")
+        original_link = upload_to_drive(fp, folder_id=ORIGINALS_FOLDER_ID)
+
+        # Upload the OCR text to the texts folder
+        print("⬆️ Upload du fichier texte OCR sur Drive ...")
+        text_link = upload_to_drive(output_path, folder_id=TEXTS_FOLDER_ID)
+
+        print(f"\nOriginal file link: {original_link}")
+        print(f"OCR text link: {text_link}")
+
     except Exception as e:
         print(f"\nERREUR : {e}")
         traceback.print_exc()
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()

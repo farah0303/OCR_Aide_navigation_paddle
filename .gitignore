@@ -1,6 +1,10 @@
+.venv/
 ven/
+Docs/
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .DS_Store
+utils_drive/credentials.json
+utils_drive/client_secrets.json

@@ -4,6 +4,7 @@ import os
 import sys
 import traceback
 from utils_drive.drive_utils import upload_to_box
+from  advanced_correction.advanced_correction import corriger_texte_ai   # 🔥 import de la correction IA
 
 try:
     from extract_text_pdf import extract_text_from_pdf
@@ -28,11 +29,9 @@ def find_example_files():
     img_dir = os.path.join("example", "img")
     files = []
 
-    # PDFs
     files.extend(glob.glob(os.path.join(pdf_dir, "*.pdf")))
     files.extend(glob.glob(os.path.join(pdf_dir, "*.PDF")))
 
-    # Images
     if SUPPORTED_EXTENSIONS:
         for e in SUPPORTED_EXTENSIONS:
             files.extend(glob.glob(os.path.join(img_dir, f"*{e}")))
@@ -43,10 +42,10 @@ def find_example_files():
 
 def choose_file(fps):
     if not fps:
-        print("❌ Aucun fichier trouvé dans 'example/pdf' ou 'example/img'.")
+        print("❌ Aucun fichier trouvé.")
         sys.exit(2)
 
-    print("\nFichiers disponibles pour OCR :\n")
+    print("\nFichiers disponibles :\n")
     for i, p in enumerate(fps, 1):
         print(f"  [{i}] {os.path.basename(p)} ({detect_file_type(p).upper()})")
 
@@ -60,7 +59,7 @@ def choose_file(fps):
                 return fps[index - 1]
         except:
             pass
-        print("Sélection invalide, essayez encore.")
+        print("Sélection invalide.")
 
 
 def process_file(fp, use_angle=True, zoom=2.0):
@@ -68,12 +67,10 @@ def process_file(fp, use_angle=True, zoom=2.0):
     if ft == 'pdf':
         if not extract_text_from_pdf:
             raise RuntimeError("Module PDF indisponible")
-        print(f"\nTraitement du PDF : {os.path.basename(fp)}")
         return extract_text_from_pdf(fp, zoom=zoom)
     elif ft == 'image':
         if not extract_text_from_image:
             raise RuntimeError("Module image indisponible")
-        print(f"\nTraitement de l'image : {os.path.basename(fp)}")
         return extract_text_from_image(fp, lang='fr', use_angle_cls=use_angle, clean_text=True)
     raise ValueError(f"Format non supporté : {fp}")
 
@@ -89,28 +86,31 @@ def main():
     try:
         files = find_example_files()
         fp = choose_file(files)
-        text = process_file(fp, use_angle=True)
+
+        print("\n📝 Extraction OCR...")
+        ocr_text = process_file(fp)
+
+        print("\n🤖 Correction AI...")
+        corrected = corriger_texte_ai(ocr_text)
 
         output_dir = ensure_output_folder()
         output_name = os.path.splitext(os.path.basename(fp))[0] + ".txt"
         output_path = os.path.join(output_dir, output_name)
 
-        # Save OCR text locally
+        # 🔥 Sauvegarde du texte corrigé
         with open(output_path, "w", encoding="utf-8") as f:
-            f.write(text)
+            f.write(corrected)
 
-        print(f"\n✅ OCR terminé. Résultat enregistré dans : {output_path}\n")
+        print(f"\n✅ Texte corrigé enregistré dans : {output_path}\n")
 
-        # Upload the original file to Box
         print("⬆️ Upload du fichier original sur Box ...")
         original_link = upload_to_box(fp, folder_id="349750293522")
 
-        # Upload the OCR text to Box
-        print("⬆️ Upload du fichier texte OCR sur Box ...")
+        print("⬆️ Upload du texte corrigé sur Box ...")
         text_link = upload_to_box(output_path, folder_id="349750293522")
 
         print(f"\nOriginal file link: {original_link}")
-        print(f"OCR text link: {text_link}")
+        print(f"Result text link: {text_link}")
 
     except Exception as e:
         print(f"\nERREUR : {e}")

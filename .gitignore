@@ -9,3 +9,4 @@ __pycache__/
 utils_drive/credentials.json
 utils_drive/client_secrets.json
 advanced_correction/.env
+venv311/

@@ -8,3 +8,4 @@ __pycache__/
 .DS_Store
 utils_drive/credentials.json
 utils_drive/client_secrets.json
+advanced_correction/.env

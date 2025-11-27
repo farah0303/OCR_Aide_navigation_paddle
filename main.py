@@ -4,7 +4,14 @@ import os
 import sys
 import traceback
 from utils_drive.drive_utils import upload_to_box
-from  advanced_correction.advanced_correction import corriger_texte_ai   # 🔥 import de la correction IA
+
+# Try to import AI correction, but make it optional
+try:
+    from advanced_correction.advanced_correction import corriger_texte_ai
+    AI_CORRECTION_AVAILABLE = True
+except:
+    AI_CORRECTION_AVAILABLE = False
+    print("⚠️  AI correction not available (OpenAI API key missing or module error)")
 
 try:
     from extract_text_pdf import extract_text_from_pdf
@@ -63,16 +70,24 @@ def choose_file(fps):
 
 
 def process_file(fp, use_angle=True, zoom=2.0):
-    ft = detect_file_type(fp)
-    if ft == 'pdf':
-        if not extract_text_from_pdf:
-            raise RuntimeError("Module PDF indisponible")
-        return extract_text_from_pdf(fp, zoom=zoom)
-    elif ft == 'image':
-        if not extract_text_from_image:
-            raise RuntimeError("Module image indisponible")
-        return extract_text_from_image(fp, lang='fr', use_angle_cls=use_angle, clean_text=True)
-    raise ValueError(f"Format non supporté : {fp}")
+    """Process file with unified text and table extraction"""
+    try:
+        from extract_text_unified import extract_document_with_tables
+        # Use unified extraction (automatically handles tables if present)
+        return extract_document_with_tables(fp, zoom=zoom, use_gpu=False)
+    except ImportError as e:
+        # Fallback to old method if unified extractor not available
+        print(f"⚠️  Unified extractor not available ({e}), using standard text extraction")
+        ft = detect_file_type(fp)
+        if ft == 'pdf':
+            if not extract_text_from_pdf:
+                raise RuntimeError("Module PDF indisponible")
+            return extract_text_from_pdf(fp, zoom=zoom)
+        elif ft == 'image':
+            if not extract_text_from_image:
+                raise RuntimeError("Module image indisponible")
+            return extract_text_from_image(fp, lang='fr', use_angle_cls=use_angle, clean_text=True)
+        raise ValueError(f"Format non supporté : {fp}")
 
 
 def ensure_output_folder():
@@ -90,27 +105,41 @@ def main():
         print("\n📝 Extraction OCR...")
         ocr_text = process_file(fp)
 
-        print("\n🤖 Correction AI...")
-        corrected = corriger_texte_ai(ocr_text)
+        # Apply AI correction only if available
+        if AI_CORRECTION_AVAILABLE:
+            print("\n🤖 Correction AI...")
+            try:
+                corrected = corriger_texte_ai(ocr_text)
+            except Exception as e:
+                print(f"⚠️  AI correction failed: {e}")
+                print("📝 Using uncorrected OCR text instead...")
+                corrected = ocr_text
+        else:
+            print("\n⏭️  Skipping AI correction (not available)")
+            corrected = ocr_text
 
         output_dir = ensure_output_folder()
         output_name = os.path.splitext(os.path.basename(fp))[0] + ".txt"
         output_path = os.path.join(output_dir, output_name)
 
-        # 🔥 Sauvegarde du texte corrigé
+        # Save the text (corrected or not)
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(corrected)
 
-        print(f"\n✅ Texte corrigé enregistré dans : {output_path}\n")
+        print(f"\n✅ Texte enregistré dans : {output_path}\n")
 
-        print("⬆️ Upload du fichier original sur Box ...")
-        original_link = upload_to_box(fp, folder_id="349750293522")
+        # Upload to Box (optional, will fail gracefully if credentials missing)
+        try:
+            print("⬆️ Upload du fichier original sur Box ...")
+            original_link = upload_to_box(fp, folder_id="349750293522")
 
-        print("⬆️ Upload du texte corrigé sur Box ...")
-        text_link = upload_to_box(output_path, folder_id="349750293522")
+            print("⬆️ Upload du texte sur Box ...")
+            text_link = upload_to_box(output_path, folder_id="349750293522")
 
-        print(f"\nOriginal file link: {original_link}")
-        print(f"Result text link: {text_link}")
+            print(f"\nOriginal file link: {original_link}")
+            print(f"Result text link: {text_link}")
+        except Exception as e:
+            print(f"⚠️  Box upload skipped: {e}")
 
     except Exception as e:
         print(f"\nERREUR : {e}")

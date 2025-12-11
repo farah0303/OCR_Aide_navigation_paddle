@@ -4,17 +4,10 @@ import os
 import sys
 import traceback
 from utils_drive.drive_utils import upload_to_box
-from  advanced_correction.advanced_correction import corriger_texte_ai   # 🔥 import de la correction IA
+from  advanced_correction.advanced_correction import corriger_texte_ai  
+from extract_text_pdf import extract_text_from_pdf
 
-try:
-    from extract_text_pdf import extract_text_from_pdf
-except:
-    extract_text_from_pdf = None
-
-try:
-    from extract_text_image import extract_text_from_image, is_image_file, SUPPORTED_EXTENSIONS
-except:
-    extract_text_from_image = is_image_file = SUPPORTED_EXTENSIONS = None
+from extract_text_image import extract_text_from_image, is_image_file, SUPPORTED_EXTENSIONS
 
 
 def detect_file_type(fp):
@@ -64,7 +57,8 @@ def choose_file(fps):
 
 def process_file(fp, use_angle=True, zoom=2.0):
     ft = detect_file_type(fp)
-    if ft == 'pdf':
+    print(f"\n📄 Type de fichier détecté : {ft.upper()}\n")
+    if ft == 'pdf' or ft == 'PDF':
         if not extract_text_from_pdf:
             raise RuntimeError("Module PDF indisponible")
         return extract_text_from_pdf(fp, zoom=zoom)

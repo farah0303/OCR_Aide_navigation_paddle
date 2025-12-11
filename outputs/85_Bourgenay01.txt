@@ -6,7 +6,7 @@ Date : 24/06/2019 08:45
 Pour : "SANQUER Yann (Chef d'antenne) - DIRM NAMO/DIESM/SPBSN/Sables Olonne" <Yann.Sanquer@developpement-durable.gouv.fr>
 Copie à : DELATTRE David - DIRM NAMO/DIESM/SPBSN/Sables Olonne <david.delattre@developpement-durable.gouv.fr>
 Bonjour Yann,
-J'avoue ne pas bien comprendre ce dossier. Il existe un alignement pour accéder à l'entrée du port qui est ensuite matérialisé par les deux feux d'entrée. Les usagers doivent conserver cet alignement, la bouée comme la balise ne servent que pour une navigation de jour. À moins qu'il soit prévu de supprimer les deux feux d'alignement, il n'y a pas à rendre actif l'espar ou la bouée.
+J'avoue ne pas bien comprendre ce dossier. Il existe un alignement pour accéder au port de l'entrée du port qui est ensuite matérialisé par les deux feux d'entrée. Les usagers doivent conserver cet alignement, la bouée comme la balise ne servent que pour une navigation de jour. À moins qu'il soit prévu de supprimer les deux feux d'alignement, il n'y a pas à rendre actif l'espar ou la bouée.
 Bien cordialement,
 Gaëlle NASSIF
 Responsable d'étude Affaires Nautiques
@@ -14,8 +14,8 @@ Tél. : +33(0)2 98 05 67 72
 Portable : +33(0)6 63 51 04 53
 Cerema
 Eau, mer et fleuves
-Technople Brest Iroise - 155 rue Pierre Bouguer - BP 5 - 29280 Plouzané Tél : +33(0)2 98 05 67 50
-Siège social : Cité des Mobilités - 25, avenue François Mitterrand - CS 92 803 - F-69674 Bron Cedex - Tél : +33(0)4 72 14 30 03
+Technople Brest Iroise - 155 rue Pierre Bouguer - BP 5 - 29280 Plouzané Tél. : +33(0)2 98 05 67 50
+Siège social : Cité des Mobilités - 25, avenue François Mitterrand - CS 92 803 - F-69674 Bron Cedex - Tél. : +33(0)4 72 14 30 03
 Le 21/06/2019 à 16:26, SANQUER Yann (Chef d'antenne) - DIRM NAMO/DIESM/SPBSN/Sables Olonne a écrit :
 Rebonjour Gaëlle,
 Le directeur du port de plaisance de Bourgenay souhaite rendre actif l'espar d'entrée de port.

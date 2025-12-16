@@ -106,6 +106,34 @@ class TablePostprocessor:
         except Exception as e:
             logger.error(f"Table validation failed: {e}")
             return False
+
+    def score_table(self, df: pd.DataFrame) -> float:
+        """
+        Compute a simple quality score for an extracted table.
+        Higher is better; 0 means unusable, 1 means very confident.
+        """
+        if df is None or df.empty:
+            return 0.0
+
+        try:
+            total_cells = df.shape[0] * df.shape[1]
+            empty_cells = df.isna().sum().sum() + (df == '').sum().sum()
+            empty_ratio = empty_cells / total_cells if total_cells > 0 else 1.0
+            non_empty_ratio = max(0.0, 1.0 - empty_ratio)
+
+            # Use average text length as a weak signal of OCR success (shorter often means missing text)
+            lengths = []
+            for col in df.columns:
+                lengths.extend(df[col].astype(str).str.len().tolist())
+            avg_len = float(np.nanmean(lengths)) if lengths else 0.0
+            length_score = min(1.0, avg_len / 10.0)
+
+            score = 0.7 * non_empty_ratio + 0.3 * length_score
+            return float(max(0.0, min(1.0, score)))
+
+        except Exception as e:
+            logger.error(f"Table scoring failed: {e}")
+            return 0.0
     
     def preprocess_image(self, image: Image.Image) -> Image.Image:
         """

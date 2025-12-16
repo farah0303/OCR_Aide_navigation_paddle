@@ -66,8 +66,11 @@ class TableStructureRecognizer:
             
             logger.debug(f"Running table structure recognition on image of size {table_image.size}")
             
-            # Run table recognition using predict() method
-            result = self.table_engine.predict(img_array)
+            # Run table recognition; PPStructureV3 exposes predict, PPStructure is callable
+            if hasattr(self.table_engine, "predict"):
+                result = self.table_engine.predict(img_array)
+            else:
+                result = self.table_engine(img_array)
             
             if not result:
                 logger.warning("No table structure detected")

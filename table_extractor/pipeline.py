@@ -147,7 +147,7 @@ class TableExtractionPipeline:
         preprocessed_image = self.postprocessor.preprocess_image(preprocessed_image)
         
         # Detect table regions
-        detected_tables = self.table_detector.detect_tables(preprocessed_image)
+        detected_tables = self.table_detector.detect_tables_multi_orientation(preprocessed_image)
         
         if not detected_tables:
             logger.info(f"No tables detected on page {page_number}")
@@ -190,11 +190,20 @@ class TableExtractionPipeline:
         """
         bbox = table_info['bbox']
         confidence = table_info['confidence']
+        rotation = table_info.get('rotation', 0)
         
         logger.debug(f"Extracting table {table_number} at {bbox}")
         
         # Crop table region
         table_image = crop_image(image, bbox)
+
+        # If detector found the table in a rotated orientation, rotate crop upright and rerun structure
+        if rotation:
+            rotation_map = {90: Image.ROTATE_90, 180: Image.ROTATE_180, 270: Image.ROTATE_270}
+            if rotation in rotation_map:
+                table_image = table_image.transpose(rotation_map[rotation])
+                # Ignore detector HTML because it was produced on the rotated view
+                table_info = {**table_info, 'html': ''}
         
         # Apply table-specific enhancements
         table_image = self.postprocessor.enhance_table_region(table_image)
@@ -235,6 +244,14 @@ class TableExtractionPipeline:
         # Validate table quality
         if not self.postprocessor.validate_table(dataframe):
             logger.warning(f"Table {table_number} failed quality validation")
+            return None
+
+        # Compute quality score and reject if below threshold
+        score = self.postprocessor.score_table(dataframe)
+        if score < self.config.min_table_score:
+            logger.warning(
+                f"Table {table_number} rejected: quality score {score:.2f} below {self.config.min_table_score:.2f}"
+            )
             return None
         
         # Convert to JSON

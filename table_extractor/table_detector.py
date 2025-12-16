@@ -49,43 +49,25 @@ class TableDetector:
             logger.error(f"Failed to initialize layout analyzer: {e}")
             raise
     
-    def detect_tables(self, image: Image.Image) -> List[Dict[str, Any]]:
-        """
-        Detect all table regions in image.
-        
-        Args:
-            image: PIL Image
-            
-        Returns:
-            List of detected tables with bboxes and metadata
-            Format: [
-                {
-                    'bbox': (x1, y1, x2, y2),
-                    'confidence': 0.95,
-                    'type': 'table'
-                },
-                ...
-            ]
-        """
+    def _detect_tables_on_image(self, image: Image.Image) -> List[Dict[str, Any]]:
+        """Run PP-Structure detection on a single orientation of the image."""
         try:
             img_array = image_to_numpy(image)
-            
+
             logger.debug(f"Running layout analysis on image of size {image.size}")
-            
+
             # Run layout analysis using __call__() method (PaddleOCR 2.7.3)
             result = self.layout_analyzer(img_array)
-            
+
             if not result or not isinstance(result, list) or len(result) == 0:
                 logger.warning("No layout elements detected")
                 return []
-            
-            # PaddleOCR 2.7.3 PPStructure returns list of dicts with 'type', 'bbox', 'res', etc.
+
             tables = []
             for idx, region in enumerate(result):
                 # region is a dict with keys: 'type', 'bbox', 'img', 'res', 'img_idx'
                 if isinstance(region, dict) and region.get('type') == 'table':
                     bbox = region.get('bbox')
-                    # bbox is [x1, y1, x2, y2] in image coordinates
                     if isinstance(bbox, (list, tuple)) and len(bbox) == 4:
                         x1, y1, x2, y2 = bbox
                         normalized_bbox = normalize_bbox(
@@ -93,32 +75,110 @@ class TableDetector:
                             image.width,
                             image.height
                         )
-                        
-                        # Get confidence score - PPStructure doesn't provide confidence for layout
-                        confidence = 1.0
-                        
+
+                        confidence = 1.0  # PPStructure layout does not expose scores
+
                         if confidence >= self.config.table_conf_threshold:
-                            # Get HTML content from 'res' if available (table recognition result)
                             html_content = region.get('res', {}).get('html', '') if isinstance(region.get('res'), dict) else ''
-                            
+
                             tables.append({
                                 'bbox': normalized_bbox,
                                 'confidence': confidence,
                                 'type': 'table',
-                                'html': html_content,  # Store HTML content from PPStructure
+                                'html': html_content,
                                 'region_id': idx
                             })
                             logger.debug(f"Detected table at {normalized_bbox} with confidence {confidence:.2f}")
-            
-            # Sort tables from top to bottom
+
             tables.sort(key=lambda t: (t['bbox'][1], t['bbox'][0]))
-            
             logger.info(f"Detected {len(tables)} table(s) in image")
             return tables
-            
+
         except Exception as e:
             logger.error(f"Table detection failed: {e}")
             return []
+
+    def _rotate_image(self, image: Image.Image, angle: int) -> Image.Image:
+        """Rotate image by 0/90/180/270 degrees using transpose to preserve bounds."""
+        if angle == 0:
+            return image
+        if angle == 90:
+            return image.transpose(Image.ROTATE_90)
+        if angle == 180:
+            return image.transpose(Image.ROTATE_180)
+        if angle == 270:
+            return image.transpose(Image.ROTATE_270)
+        raise ValueError(f"Unsupported angle: {angle}")
+
+    def _map_bbox_to_original(self, bbox: Tuple[int, int, int, int], angle: int,
+                               orig_w: int, orig_h: int) -> Tuple[int, int, int, int]:
+        """Map a bbox from a rotated image back to original orientation."""
+        x1, y1, x2, y2 = bbox
+        points = [(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
+        mapped = []
+
+        for x, y in points:
+            if angle == 0:
+                nx, ny = x, y
+            elif angle == 90:
+                nx, ny = orig_w - 1 - y, x
+            elif angle == 180:
+                nx, ny = orig_w - 1 - x, orig_h - 1 - y
+            elif angle == 270:
+                nx, ny = y, orig_h - 1 - x
+            else:
+                raise ValueError(f"Unsupported angle: {angle}")
+            mapped.append((nx, ny))
+
+        xs = [p[0] for p in mapped]
+        ys = [p[1] for p in mapped]
+        return (
+            int(max(0, min(xs))),
+            int(max(0, min(ys))),
+            int(min(orig_w, max(xs))),
+            int(min(orig_h, max(ys)))
+        )
+
+    def detect_tables(self, image: Image.Image) -> List[Dict[str, Any]]:
+        """Detect tables assuming upright orientation (backwards-compatible)."""
+        return self._detect_tables_on_image(image)
+
+    def detect_tables_multi_orientation(self, image: Image.Image) -> List[Dict[str, Any]]:
+        """Detect tables trying 0/90/180/270 rotations and map back to original."""
+        orig_w, orig_h = image.width, image.height
+        angles = [0, 90, 180, 270]
+        best_tables: List[Dict[str, Any]] = []
+        best_score = -1
+        best_angle = 0
+
+        for angle in angles:
+            rotated_img = self._rotate_image(image, angle)
+            detected = self._detect_tables_on_image(rotated_img)
+
+            if not detected:
+                continue
+
+            # Map back to original coordinates
+            mapped = []
+            for tbl in detected:
+                mapped_bbox = self._map_bbox_to_original(tbl['bbox'], angle, orig_w, orig_h)
+                mapped.append({**tbl, 'bbox': mapped_bbox, 'rotation': angle})
+
+            # Prefer orientations that produce more tables and richer HTML output
+            total_html_chars = sum(len(tbl.get('html', '') or '') for tbl in detected)
+            score = len(mapped) + 0.001 * total_html_chars
+
+            if score > best_score:
+                best_score = score
+                best_tables = mapped
+                best_angle = angle
+
+        if best_tables:
+            logger.info(f"Using orientation {best_angle}° with {len(best_tables)} detected table(s)")
+
+        # Sort mapped tables top-to-bottom
+        best_tables.sort(key=lambda t: (t['bbox'][1], t['bbox'][0]))
+        return best_tables
     
     def detect_all_regions(self, image: Image.Image) -> List[Dict[str, Any]]:
         """

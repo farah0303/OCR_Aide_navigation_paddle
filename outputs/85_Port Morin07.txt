@@ -1,0 +1,132 @@
+-- PAGE 1 --
+SECRETARIAT D'ETAT
+Direction interrégionale de la mer
+CHARGE DE LA MER
+Nord-Atlantique - Manche Ouest
+ET DE LA BIODIVERSITE
+Liberté
+Egalité
+Fraternité
+Service infrastructures et équipements de sécurité maritime
+Brest, le 15 mai 2024
+Division phares et balises des Pays de la Loire
+DECISION N° 2024/237
+La directrice interrégionale de la mer - Nord Atlantique - Manche Ouest
+Vu :
+ le décret n° 2017-1653 du 30 novembre 2017 modifié relatif à la signalisation maritime ;
+l'arrêté du 30 novembre 2017 modifié portant définition du système de balisage
+maritime et de son référentiel nautique et technique ;
+l'arrêté du 30 novembre 2017 relatif au traitement des dossiers de signalisation
+maritime ;
+l'avis favorable de la commission nautique locale du 30 juin 2023 ;
+Considérant :
+ que le balisage du projet est normalisé par le référentiel nautique et technique ;
+ que le projet n'est pas situé sur des grands axes de navigation ;
+DECIDE
+de statuer sur la modification des caractéristiques de plusieurs bouées et feux de signalisation
+maritime du chenal d'accès au port de Morin (dossier PRISME 2019-85-0001).
+Article 1 : Statut de l'aide à la navigation maritime
+Ce balisage comprend des Établissements de Signalisation Maritime (EsM) et des Aides à la
+Navigation de Complément (ANC).
+Direction interrégionale de la mer Nord Atlantique - Manche Ouest
+1/ 4
+Service infrastructures et équipements de sécurité maritime
+8 Quai du Commandant Malbert - 29200 BREST
+
+-- PAGE 2 --
+Article 2 : Financement de l'Aide à la Navigation Maritime
+L'opération de modification du balisage est à la charge et sous la responsabilité de la
+commune de l'Épine. Elle doit garantir la préservation de la conformité et supporter les
+charges financières d'investissement et de fonctionnement.
+Article 3 : Caractéristiques
+Les caractéristiques validées du balisage sont décrites dans l'annexe 1.
+Article 4 : Information nautique
+Ces modifications prévues devront faire, en application des textes en vigueur, l'objet de la
+diffusion réglementaire de l'information nautique et d'une transmission au SHOM.
+Article 5 : Date de prise d'effet et validité
+Cette décision prend effet, pour chaque élément, à la date de réalisation de l'opération,
+confirmée par l'information nautique correspondante.
+La directrice interrégionale de la mer
+Nord Atlantique Manche Ouest et par délégation,
+le chef du service infrastructures
+et équipements de sécurité maritime
+Signature
+numérique de
+Ronan ROUE
+Date :
+2024.05.15
+19:58:36 +02'00'
+Destinataires :
+- Directeur de la direction technique risques, eau, mer du CEREMA
+- SHOM, président de la grande commission nautique
+- Bureau SNC2 de la DGAMPA
+- Dirm Namo/Direction, Dirm Namo/SIESM
+- DDTM85/DML
+- Préfecture maritime/AEM
+- Commune de l'Épine
+Direction interrégionale de la mer Nord Atlantique - Manche Ouest
+2/4
+Service infrastructures et équipements de sécurité maritime
+8 Quai du Commandant Malbert - 29200 BREST
+
+-- PAGE 3 --
+ANNEXE 1
+Caractéristiques du balisage
+ Situation antérieure
+L'Épine
+03
+26
+13
+La Gué
+13
+922
+E27
+123
+3.
+2sR
+Direction interrégionale de la mer Nord Atlantique - Manche Ouest
+3/4
+Service infrastructures et équipements de sécurité maritime
+8 Quai du Commandant Malbert - 29200 BREST
+
+[TABLE 1]
+| Nom Bouée du Giglio                                                     | N° base de donnée 8500067   | Position 46°57,440' N                             | Marque Latérale bâbord           | Observation Active                                       | Classement ESM   |
+|:------------------------------------------------------------------------|:----------------------------|:--------------------------------------------------|:---------------------------------|:---------------------------------------------------------|:-----------------|
+| Bouée Trois-Noures                                                      | 8500068                     | 2°19,359' W 46°57,799' N 2°18,789' W              | Latérale tribord                 | Passive                                                  | ESM              |
+| Bouée n°1 de Morin                                                      | 8500069                     | 46°58,659' N 2°17,935' W                          | Latérale tribord                 | Passive                                                  | ANC              |
+| Bouée n°2 Port de Morin Feu de mouillage de                             | 8500049 8500047             | 46°58,752' N 2°17,965' W 46°59,153' N             | Latérale bâbord Feu à secteurs   | Active V (316-28)                                        | ANC ESM          |
+| Morin                                                                   | nan                         | 2°17,589' W                                       | nan                              | B (28-35°) R (35°-134°) Obsc (134°-316) Actif R -FI(2) - | nan              |
+| Feu de jetée du Port de Morin Balise tribord jetée Est du port de Morin | 8500048 8500241             | 46°58,863' N 2°17,393' W 46°58,983' N 2°17,316' W | Latérale bâbord Latérale tribord | 2M Passive                                               | ESM ANC          |
+
+
+-- PAGE 4 --
+ Situation nouvelle
+L'Épine
+125
+0
+3
+28
+C
+13
+123
+Direction interrégionale de la mer Nord Atlantique - Manche Ouest
+4/4
+Service infrastructures et équipements de sécurité maritime
+8 Quai du Commandant Malbert - 29200 BREST
+
+[TABLE 1]
+| Nom                                                                       | N° base de donnée   | Position                                        | Marque                             | Observation                                                           | Classement   |
+|:--------------------------------------------------------------------------|:--------------------|:------------------------------------------------|:-----------------------------------|:----------------------------------------------------------------------|:-------------|
+| Bouée du Giglio                                                           | 8500067             | 46°57,440' N 2°19,359' W                        | Latérale bâbord                    | R-FI-2M                                                               | ESM          |
+| Bouée Trois-Noures                                                        | 8500068 À créer     | 46°57,799' N 2°18,789' W                        | Latérale tribord                    | V - FI(2)- 2M V - FI(3) - 2M,                                          | ESM ANC      |
+| Bouée n°1 du port de Morin Bouée n°2 du port de Morin                    | À créer             | 46°58,279'N 02°18,273'W 46°58,328'N 02°18,431'W | Latérale bâbord                    | nouvelle bouée R -FI(3)-2M, nouvelle bouée                            | ANC          |
+| Bouée n°3 du port de Morin Bouée n°4 Port de Morin                       | 8500069 8500049     | 46°58,593'N 02°17,758'W 46°58,658'N 02°17,885'W | Latérale tribord Latérale bâbord   | V-FI -2M, bouée déplacée R-FI-2M, bouée déplacée                      | ANC ANC      |
+| Bouée n°5 du port de Morin Bouée n°6 du port de Morin Feu de mouillage de | À créer À créer     | À définir À définir                             | Latérale tribord Latérale bâbord   | V - FI(2) - 2M, nouvelle bouée Passive, nouvelle bouée V (316-30°)-7M | ANC ANC      |
+| Morin                                                                     | 8500047             | nan                                             | nan                                | nan                                                                   | nan          |
+| nan                                                                       | 8500048             | 46°58,863' N                                    | Latérale bâbord                    | R - FI(2)-3M                                                          | ESM          |
+| nan                                                                       | nan                 | nan                                             | nan                                | réduction du secteur blanc                                            | nan          |
+| nan                                                                       | nan                 | 46°59,153' N 2°17,589' W                        | Feu à secteurs                     | B (30°-35°)-10M R (35°-134°)-7M Obsc (134°-316)                       | ESM          |
+| nan                                                                       | nan                 | nan                                             | nan                                | nan                                                                   | nan          |
+| Feu de jetée du Port                                                      | nan                 | nan                                             | nan                                | nan                                                                   | nan          |
+| de Morin                                                                  | nan                 | 2°17,393' W                                     | nan                                | augmentation de                                                       | nan          |
+| Balise tribord jetée Est du port de Morin                                 | 8500241             | 46°58,983' N 2°17,316' W                        | Latérale tribord                  | la portée Passive                                                     | ANC          |

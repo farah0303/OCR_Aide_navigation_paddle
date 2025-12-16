@@ -65,6 +65,7 @@ class Config:
     min_table_rows: int = 1
     min_table_cols: int = 1
     max_empty_cell_ratio: float = 0.9
+    min_table_score: float = 0.4
     
     def __post_init__(self):
         """Validate configuration after initialization."""

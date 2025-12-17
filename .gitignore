@@ -1,6 +1,11 @@
 .venv/
 ven/
 Docs/
+
+data/
+
+*.csv
+
 __pycache__/
 *.pyc
 *.pyo

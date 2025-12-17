@@ -75,7 +75,7 @@ def auto_clean_text(text):
     return clean_text
 
 
-def extract_text_from_image(image_path, lang='fr', use_angle_cls=True, clean_text=False):
+def extract_text_from_image(image_path, lang='fr', use_angle_cls=True, clean_text=False, use_gpu=False):
     if not PaddleOCR:
         raise RuntimeError("PaddleOCR unavailable")
     if not os.path.exists(image_path):
@@ -83,7 +83,7 @@ def extract_text_from_image(image_path, lang='fr', use_angle_cls=True, clean_tex
     if not is_image_file(image_path):
         raise ValueError(f"Unsupported format: {image_path}")
     print(f"Processing {os.path.basename(image_path)} ...")
-    ocr = PaddleOCR(use_angle_cls=use_angle_cls, lang=lang)
+    ocr = PaddleOCR(use_angle_cls=use_angle_cls, lang=lang, use_gpu=use_gpu)
     pil_img = load_image(image_path)
     text = ocr_image(ocr, pil_img)
     if clean_text and text:
@@ -94,10 +94,10 @@ def extract_text_from_image(image_path, lang='fr', use_angle_cls=True, clean_tex
     return text
 
 
-def extract_text_from_images(image_paths, lang='fr', use_angle_cls=True, clean_text=False):
+def extract_text_from_images(image_paths, lang='fr', use_angle_cls=True, clean_text=False, use_gpu=False):
     if not PaddleOCR:
         raise RuntimeError("PaddleOCR unavailable")
-    ocr = PaddleOCR(use_angle_cls=use_angle_cls, lang=lang)
+    ocr = PaddleOCR(use_angle_cls=use_angle_cls, lang=lang, use_gpu=use_gpu)
     all_text = []
     for img_path in image_paths:
         if not os.path.exists(img_path):

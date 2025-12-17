@@ -4,55 +4,56 @@ Nord Atlantique-Manche Ouest
 MINISTERE
 DE LA TRANSITION
 ÉCOLOGIQUE,
-DE LA BIODIVERSITÉ,
-DE LA FORÊT, DE LA MER
-ET DE LA PÊCHE
-Fraternité
+DE LA BIODIVERSITE,
+DE LA FORET, DE LA MER
+ET DE LA PECHE
+Fraternite
 Division infrastructures et équipements de sécurité maritime
 Division phares et balises des Pays de la Loire
 Centre de balisage de la Vendée
 DECISION N° 2025/05
-La directrice interrégionale de la mer - Nord Atlantique-Manche Ouest
+La directrice interrégionale de la mer - Nord Atlantigue-Manche Ouest
 Vu :
- le décret n° 2017-1653 du 30 novembre 2017 relatif à la signalisation maritime ;
- l'arrêté du 30 novembre 2017 modifié portant définition du système de balisage
+ le décret n° 2017-1653 du 30 novembre 2017 relatif a la signalisation maritime ;
+ I'arrété du 30 novembre 2017 modifié portant définition du systéme de balisage
 maritime et de son référentiel nautique et technique ;
- l'arrêté du 30 novembre 2017 relatif au traitement des dossiers de signalisation
+ I'arrété du 30 novembre 2017 relatif au traitement des dossiers de signalisation
 maritime ;
- l'avis favorable de l'experte nautique de la DGAMPA du 25 avril 2022 ;
- l'avis favorable de la commission nautique locale du 16 octobre 2024.
+I'avis favorable de I'experte nautique de la DGAMPA du 25 avril 2022 ;
+ I'avis favorable de la commission nautique locale du 16 octobre 2024.
 Considérant :
  que le balisage du projet est normalisé par le référentiel nautique et technique (bouée
 SADO) ;
- que le projet n'est pas situé sur des grands axes de navigation ;
- que sa mise en place expérimentale en date du 27 juillet 2022 à proximité de la bouée des
-Boeufs n'a pas fait l'objet d'observations ;
+que le projet n'est pas situé sur des grands axes de navigation ;
+que sa mise en place expérimentale en date 27 juillet 2022 ä proximité de la bouée des
+Boeufs n'a pas fait I'objet d'observations ;
 DECIDE
- de statuer sur la demande de balisage de la bouée houlographe qui est une station
-apponte au sud des communes de l'île de Noirmoutier, à proximité de la bouée des Boeufs positionnée à
-l'ouest du plateau des Boeufs de l'île de Noirmoutier (Vendée). (dossier PRISME 2021-85-
+de statuer sur la demande de balisage de la bouée houlographe qui est une station
+ap goneunaaos el ued aaloidap '(oavs) sanbiydeagoueaoo saguuop ap uo!d!s!nboe,p
+communes de I'ile de Noirmoutier, a proximité de la bouée des Boeufs positionnée a
+I'ouest du plateau des Boeufs de I'ile de Noirmoutier (Vendée). (dossier PRISME 2021-85-
 0002).
 Direction interrégionale de la mer Nord Atlantique-Manche Ouest
-12 boulevard Vincent Gache, 44200 NANTES
+12 boulevard Vincent Gache,44200 NANTES
 Tél : 33 (0)2 40 44 81 10 - Fax : 33 (0)2 40 73 33 26
 
 -- PAGE 2 --
-Article 1 : Statut de l'aide à la navigation maritime
-Ce balisage est classé Aide à la Navigation de Complément (ANC).
-Article 2 : Financement de l'Aide à la Navigation Maritime
-Le matériel et le balisage sont à la charge de la communauté de communes de l'île de Noirmoutier
+Article 1 : Statut de l'aide ä la navigation maritime
+Ce balisage est classé Aide a la Navigation de Complément (ANC).
+Article 2 : Financement de l'Aide ä la Navigation Maritime
+Le matériel et le balisage est ä la charge de la communauté de communes de I'ile de Noirmoutier
 et sous sa responsabilité. Elle doit garantir la préservation de la conformité et supporter les
-charges financières d'investissement et de fonctionnement. Elle est le garant de la diffusion des
-Article 3 : Caractéristiques, catégories, obligations et contrôle de conformité du balisage
-Les caractéristiques validées du balisage sont décrites dans l'annexe 1.
+charges financieres d'investissement et de fonctionnement. Elle est le garant de la diffusion des
+Article 3 : Caractéristiques, catégories, obligations et contröle de conformité du balisage
+Les caractéristiques validées du balisage sont décrites dans I'annexe 1.
 Article 4 : Information nautique
-La communauté de communes de l'île de Noirmoutier est garante de la diffusion de
-l'information nautique préparatoire, de réalisation (notamment en précisant la position réelle du
-corps mort), en cas d'incident et d'enlèvement de la bouée.
-Ces informations devront faire, en application des textes en vigueur, l'objet d'une diffusion
+La communauté de communes de I'lle de Noirmoutier est garante de la diffusion de
+I'information nautique préparatoire, de réalisation (notamment en précisant la position réelle du
+corps mort), en cas d'incident et d'enlévement de la bouée.
+Ces informations devront faire, en application des textes en vigueur, I'objet d'une diffusion
 réglementaire et d'une transmission au SHOM.
 Article 5 : Date de prise d'effet et validité
-Cette décision prend effet à la date de réalisation de l'opération, confirmée par l'information
+Cette décision prend effet a la date de réalisation de I'opération, confirmée par I'information
 nautique correspondante.
 Brest, le 8 janvier 2025
 La directrice interrégionale de la mer Nord
@@ -73,13 +74,13 @@ Destinataires :
 - Bureau SNC2 de la DGAMPA
 - Dirm Namo/Direction, Dirm Namo/DIESM
 - DDTM85/DML
-- Préfecture maritime/AEM
-- Communauté de communes de l'île de Noirmoutier
+-Préfecture maritime/AEM
+- Communauté de communes de I'ile de Noirmoutier
 2/3
 
 -- PAGE 3 --
 Annexe 1 - Caractéristiques validées du balisage
-* : position réelle du corps mort à préciser lors de la mise en place de la bouée via l'information nautique.
+* : position réelle du corps mort a préciser lors de la mise en place de la bouée via I'information nautique.
 16
 146
 143
@@ -101,15 +102,15 @@ Fl(5)Y.20s
 155
 171
 R
-Déplacement de la bouée des Boeufs et de la bouée houlographe de 0,3 M environ vers le
+Déplacement de la bouée des boeufs et de la bouée houlographe de 0,3 M environ vers le
 Nord
 3/3
 
 [TABLE 1]
 | 0                    | 1            | 2                    | 3                       | 4          | 5        | 6              | 7                                | 8              | 9          |
 |:---------------------|:-------------|:---------------------|:------------------------|:-----------|:---------|:---------------|:---------------------------------|:---------------|:-----------|
-| Nom Patrimoine       | Numéro SYSSI | Positions - WGS 84 * | Positions - WGS 84 *    | Classement | Marque   | Marque de jour | Rythme du feu et portée nominale | nan            | nan        |
-| Nom Patrimoine       | Numéro SYSSI | Ancienne position    | Nouvelle position       | ESM-ANC    | Marque   | Marque de jour | Rythme du feu et portée nominale | nan            | nan        |
+| Nom Patrimoine       | Numero SYSSI | Positions - WGS 84 * | Positions - WGS 84 *    | Classement | Marque   | Marque de jour | Rythme du feu et portee nominale | nan            | nan        |
+| Nom Patrimoine       | Numero SYSSI | Ancienne position    | Nouvelle position       | ESM-ANC    | Marque   | Marque de jour | Rythme du feu et portee nominale | nan            | nan        |
 | Bouée houlographe du | 8500345      | 46°55,00'N -         | 46°55,37'N - 02°28,16'W | ANC        | Spéciale | Couleur jaune  | nan                              | FI(5).20s - 1M | nan        |
 | Bouée houlographe du | 8500345      | 46°55,00'N -         | 46°55,37'N - 02°28,16'W | ANC        | Spéciale | Couleur jaune  | nan                              | FI(5).20s - 1M | 02°27,98'W |
 | plateau des Boeufs   | nan          | nan                  | nan                     | nan        | nan      | nan            | nan                              | nan            | nan        |

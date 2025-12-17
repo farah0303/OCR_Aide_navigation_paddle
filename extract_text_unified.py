@@ -23,13 +23,17 @@ except ImportError as e:
 
 # Global shared instances (initialized once per session)
 _table_pipeline = None
+_table_pipeline_use_gpu = None
 _ocr_engine = None
+_ocr_engine_use_gpu = None
 
 
 def get_table_pipeline(use_gpu=False):
     """Get or initialize the shared table extraction pipeline (lazy initialization)."""
-    global _table_pipeline
-    if _table_pipeline is None:
+    global _table_pipeline, _table_pipeline_use_gpu
+    if _table_pipeline is None or _table_pipeline_use_gpu != use_gpu:
+        if _table_pipeline is not None:
+            print("ℹ️  Reinitializing table pipeline for new GPU setting...")
         print("🔧 Initializing table extraction pipeline (this may take 60-120 seconds)...")
         config = Config(
             pdf_dpi=200,  # Match OCR zoom level (zoom=2.0 → ~200 DPI)
@@ -41,18 +45,20 @@ def get_table_pipeline(use_gpu=False):
             save_images=False
         )
         _table_pipeline = TableExtractionPipeline(config=config, use_gpu=use_gpu)
+        _table_pipeline_use_gpu = use_gpu
         print("✅ Table extraction pipeline initialized")
     return _table_pipeline
 
 
-def get_ocr_engine(lang='fr'):
+def get_ocr_engine(lang='fr', use_gpu=False):
     """Get or initialize the shared OCR engine (lazy initialization)."""
-    global _ocr_engine
-    if _ocr_engine is None:
+    global _ocr_engine, _ocr_engine_use_gpu
+    if _ocr_engine is None or _ocr_engine_use_gpu != use_gpu:
         if not PaddleOCR:
             raise RuntimeError("PaddleOCR unavailable")
         print("🔧 Initializing OCR engine...")
-        _ocr_engine = PaddleOCR(use_angle_cls=True, lang=lang)
+        _ocr_engine = PaddleOCR(use_angle_cls=True, lang=lang, use_gpu=use_gpu)
+        _ocr_engine_use_gpu = use_gpu
         print("✅ OCR engine initialized")
     return _ocr_engine
 
@@ -197,7 +203,7 @@ def format_table_as_simple_text(table):
     return '\n'.join([header, separator] + rows)
 
 
-def extract_document_with_tables(file_path, zoom=2.0, use_gpu=False):
+def extract_document_with_tables(file_path, zoom=2.0, use_gpu=False, return_details=False):
     """
     Extract text and tables from a document (PDF or image).
     
@@ -219,6 +225,14 @@ def extract_document_with_tables(file_path, zoom=2.0, use_gpu=False):
         raise FileNotFoundError(f"File not found: {file_path}")
     
     print(f"📄 Processing: {os.path.basename(file_path)}")
+    pages_count = 1
+    if file_path.lower().endswith('.pdf'):
+        try:
+            doc_probe = fitz.open(file_path)
+            pages_count = doc_probe.page_count
+            doc_probe.close()
+        except Exception as e:
+            print(f"⚠️  Could not read page count: {e}")
     
     # Initialize table pipeline (required for scanned documents)
     print("🔧 Initializing table extraction pipeline...")
@@ -237,12 +251,14 @@ def extract_document_with_tables(file_path, zoom=2.0, use_gpu=False):
         import traceback
         traceback.print_exc()
         print("   Falling back to text-only extraction")
-        return extract_text_only(file_path, zoom)
+        return extract_text_only(file_path, zoom, use_gpu=use_gpu, return_details=return_details, pages_hint=pages_count)
     
     # If no tables found, use standard text extraction
+    tables_count = len(tables) if tables else 0
+
     if not tables:
         print("   Using standard text extraction for non-table content")
-        return extract_text_only(file_path, zoom)
+        return extract_text_only(file_path, zoom, use_gpu=use_gpu, return_details=return_details, pages_hint=pages_count)
     
     # Organize tables by page
     tables_by_page = {}
@@ -253,16 +269,20 @@ def extract_document_with_tables(file_path, zoom=2.0, use_gpu=False):
         tables_by_page[page_num].append(table)
     
     # Initialize OCR engine
-    ocr = get_ocr_engine(lang='fr')
+    ocr = get_ocr_engine(lang='fr', use_gpu=use_gpu)
     
     # Process document
     if file_path.lower().endswith('.pdf'):
-        return extract_pdf_with_tables(file_path, tables_by_page, ocr, zoom)
+        text = extract_pdf_with_tables(file_path, tables_by_page, ocr, zoom, pages_count)
     else:
-        return extract_image_with_tables(file_path, tables_by_page, ocr)
+        text = extract_image_with_tables(file_path, tables_by_page, ocr, pages_count)
+
+    if return_details:
+        return text, {"tables": tables_count, "pages": pages_count}
+    return text
 
 
-def extract_text_only(file_path, zoom=2.0):
+def extract_text_only(file_path, zoom=2.0, use_gpu=False, return_details=False, pages_hint=None):
     """
     Extract text without table detection (fallback).
     
@@ -273,15 +293,29 @@ def extract_text_only(file_path, zoom=2.0):
     Returns:
         str: Extracted text
     """
+    pages_count = pages_hint if pages_hint is not None else (1 if not file_path.lower().endswith('.pdf') else None)
+
     if file_path.lower().endswith('.pdf'):
         from extract_text_pdf import extract_text_from_pdf
-        return extract_text_from_pdf(file_path, pages=None, zoom=zoom)
+        if pages_count is None:
+            try:
+                probe = fitz.open(file_path)
+                pages_count = probe.page_count
+                probe.close()
+            except Exception:
+                pages_count = 0
+        text = extract_text_from_pdf(file_path, pages=None, zoom=zoom)
     else:
         from extract_text_image import extract_text_from_image
-        return extract_text_from_image(file_path, lang='fr', use_angle_cls=True, clean_text=True)
+        pages_count = 1 if pages_count is None else pages_count
+        text = extract_text_from_image(file_path, lang='fr', use_angle_cls=True, clean_text=True, use_gpu=use_gpu)
+
+    if return_details:
+        return text, {"tables": 0, "pages": pages_count}
+    return text
 
 
-def extract_pdf_with_tables(pdf_path, tables_by_page, ocr, zoom=2.0):
+def extract_pdf_with_tables(pdf_path, tables_by_page, ocr, zoom=2.0, pages_count=None):
     """
     Extract text and tables from PDF, merging them in reading order.
     
@@ -295,6 +329,8 @@ def extract_pdf_with_tables(pdf_path, tables_by_page, ocr, zoom=2.0):
         str: Combined text with embedded tables
     """
     doc = fitz.open(pdf_path)
+    if pages_count is None:
+        pages_count = doc.page_count
     all_text = []
     
     for page_num in range(doc.page_count):
@@ -352,7 +388,7 @@ def extract_pdf_with_tables(pdf_path, tables_by_page, ocr, zoom=2.0):
     return "\n\n".join(all_text).strip()
 
 
-def extract_image_with_tables(image_path, tables_by_page, ocr):
+def extract_image_with_tables(image_path, tables_by_page, ocr, pages_count=1):
     """
     Extract text and tables from image, merging them in reading order.
     

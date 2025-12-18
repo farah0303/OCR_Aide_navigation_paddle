@@ -204,10 +204,20 @@ def main():
     parser.add_argument("--no-ai", action="store_true", help="Skip AI correction even if available.")
     parser.add_argument("--no-upload", action="store_true", help="Skip Box uploads for batch runs.")
     parser.add_argument("--resume", action="store_true", help="Skip files already processed (results.csv or existing output txt).")
+    parser.add_argument("--serve-api", action="store_true", help="Start the HTTP API server instead of running a batch.")
+    parser.add_argument("--api-host", default="0.0.0.0", help="Host for the API server (default: 0.0.0.0).")
+    parser.add_argument("--api-port", type=int, default=5000, help="Port for the API server (default: 5000).")
 
     args = parser.parse_args()
 
     try:
+        if args.serve_api:
+            from api import app
+
+            print(f"🌐 Starting API server on {args.api_host}:{args.api_port} ...")
+            app.run(host=args.api_host, port=args.api_port)
+            return
+
         if args.inputs:
             files = gather_input_files(args.inputs, recursive=args.recursive)
             if not files:
